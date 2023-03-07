@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumo da Reunião</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE2Zm4iZcYmZjsN2x3PAA"
+        crossorigin="anonymous">
+    <style>
+        body {
+            font-size: 18px;
+        }
+    
+        .form-control {
+            font-size: 18px;
+        }
+    
+        .form-group label {
+            font-weight: bold;
+        }
+        
+    </style>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #ff8c00;
+            color: #fff;
+        }
+    
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+        }
+    
+        .form-control {
+            width: 100%;
+            min-width: 300px;
+        }
+    
+        .form-group {
+            margin-bottom: 20px;
+        }
+    
+        .btn-primary {
+            background-color: #000;
+            border-color: #000;
+        }
+    
+        .btn-primary:hover {
+            background-color: #fff;
+            color: #000;
+        }
+    </style>
+    
+    <style>
+        body {
+    background-color: #ddd;
+    color: #000;
+}
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .form-control {
+            background-color: #fff;
+            color: #343a40;
+            border: 1px solid #ced4da;
+            border-radius: 0;
+        }
+        
+        .summary-heading {
+            color: #ff8c00;
+        }
+
+        .form-control:focus {
+            background-color: #fff;
+            color: #343a40;
+            border: 1px solid #6c757d;
+            border-radius: 0;
+            box-shadow: none;
+        }
+
+        label {
+            font-weight: bold;
+            color: #343a40;
+        }
+
+        #summary-container {
+            display: none;
+        }
+
+        #summary {
+            background-color: #fff;
+            color: #343a40;
+            min-height: 100px;
+            border: 1px solid #ced4da;
+            border-radius: 0;
+            padding: 10px;
+        }
+
+        #summary p {
+            margin: 0 0 10px 0;
+        }
+
+        blockquote {
+            background-color: #f8f9fa;
+            border-left: 5px solid #ced4da;
+            margin: 0;
+            padding: 10px;
+        }
+
+        button {
+            margin-top: 10px;
+        }
+
+        button.btn-primary {
+            background-color: #f58f39;
+            border-color: #f58f39;
+        }
+
+        button.btn-primary:hover {
+            background-color: #dc7437;
+            border-color: #dc7437;
+        }
+
+        button.btn-secondary {
+            background-color: #343a40;
+            border-color: #343a40;
+        }
+
+        button.btn-secondary:hover {
+            background-color: #212529;
+            border-color: #212529;
+        }
+
+        h1 {
+            color: #f58f39;
+        }
+
+        hr {
+            border-color: #f58f39;
+        }
+
+        body {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Resumo da Reunião</h1>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert alert-success">
+                    {{ messages[0] }}
+                </div>
+            {% endif %}
+        {% endwith %}
+        <form onsubmit="event.preventDefault(); generateSummary();" class="mb-5">
+            <div class="form-group">
+                <label for="titulo">Título da Reunião:</label>
+                <input type="text" class="form-control" id="titulo" name="titulo" required>
+            </div>
+            <div class="form-group">
+                <label for="data">Data da Reunião:</label>
+                <input type="date" class="form-control" id="data" name="data" required>
+            </div>
+            <div class="form-group">
+                <label for="participantes">Participantes:</label>
+                <input type="text" class="form-control" id="participantes" name="participantes" placeholder="Digite os nomes separados por vírgula" required>
+            </div>
+            <div class="form-group">
+                <label for="discussoes">Discussões:</label>
+                <textarea class="form-control" id="discussoes" name="discussoes" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="responsavel_teste">Responsável pelo Teste:</label>
+                <input type="text" class="form-control" id="responsavel_teste" name="responsavel_teste" required>
+            </div>
+            <div class="form-group">
+                <label for="pendencias">Pendências:</label>
+                <textarea class="form-control" id="pendencias" name="pendencias" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="botmanager_ok">O Botmanager Está Funcionando Corretamente?:</label>
+                <select class="form-control" id="botmanager_ok" name="botmanager_ok" required>
+                    <option value="Sim">Sim</option>
+                    <option value="Não">Não</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="sucesso">Sucesso da Reunião:</label>
+                <select class="form-control" id="sucesso" name="sucesso" required>
+                    <option value="Sim">Sim</option>
+                    <option value="Não">Não</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="hora_de_termino">Hora de Término da Reunião:</label>
+                <input type="time" class="form-control" id="hora_de_termino" name="hora_de_termino" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Gerar Resumo</button>
+        </form>
+        <div id="summary-container" style="display: none;">
+            <hr>
+            <h2 class="summary-heading">Resumo da Reunião</h2>
+            <blockquote>
+                <p><strong>Título da Reunião:</strong> <span id="titulo-summary"></span></p>
+                <p><strong>Data da Reunião:</strong> <span id="data-summary"></span></p>
+                <p><strong>Participantes:</strong> <span id="participantes-summary"></span></p>
+                <p><strong>Discussões:</strong></p>
+                <p id="discussoes-summary"></p>
+                <p><strong>Responsável pelo Teste:</strong> <span id="responsavel_teste-summary"></span></p>
+                <p><strong>Pendências:</strong> <span id="pendencias-summary"></span></p>
+                <p><strong>O Botmanager Está Funcionando Corretamente?:</strong> <span id="botmanager_ok-summary"></span></p>
+                <p><strong>Sucesso da Reunião:</strong> <span id="sucesso-summary"></span></p>
+                <p><strong>Hora de Término da Reunião:</strong> <span id="hora_de_termino-summary"></span></p>
+            </blockquote>
+            <div class="row justify-content-center mt-4">
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-primary btn-block">Gerar Resumo</button>
+                </div>
+            </div>
+        </form>
+        <div id="summary-container" style="display: none;">
+            <hr>
+            <h2>Resumo da Reunião</h2>
+            <blockquote>
+                <p><strong>Título da Reunião:</strong> <span id="titulo-summary"></span></p>
+                <p><strong>Data da Reunião:</strong> <span id="data-summary"></span></p>
+                <p><strong>Participantes:</strong> <span id="participantes-summary"></span></p>
+                <p><strong>Discussões:</strong></p>
+                <p id="discussoes-summary"></p>
+                <p><strong>Responsável pelo Teste:</strong> <span id="responsavel_teste-summary"></span></p>
+                <p><strong>Pendências:</strong> <span id="pendencias-summary"></span></p>
+                <p><strong>O Botmanager Está Funcionando Corretamente?:</strong> <span id="botmanager_ok-summary"></span></p>
+                <p><strong>Sucesso da Reunião:</strong> <span id="sucesso-summary"></span></p>
+                <p><strong>Hora de Término da Reunião:</strong> <span id="hora_de_termino-summary"></span></p>
+            </blockquote>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('form').submit(function(event) {
+                    event.preventDefault();
+                    var participantes = $('#participantes').val().split(',');
+                    $('#titulo-summary').text($('#titulo').val());
+                    $('#data-summary').text($('#data').val());
+                    $('#participantes-summary').text(participantes.join(', '));
+                    $('#discussoes-summary').html($('#discussoes').val().replace(/\n/g, '<br>'));
+                    $('#responsavel_teste-summary').text($('#responsavel_teste').val());
+                    $('#pendencias-summary').text($('#pendencias').val());
+                    $('#botmanager_ok-summary').text($('#botmanager_ok').val());
+                    $('#sucesso-summary').text($('#sucesso').val());
+                    $('#hora_de_termino-summary').text($('#hora_de_termino').val());
+                    $('#summary-container').fadeIn('slow');
+                });
+            });
+        </script>
+    </div>
+</body>
+</html>
+
